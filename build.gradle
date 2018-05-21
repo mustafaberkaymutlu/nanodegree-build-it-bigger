@@ -20,3 +20,11 @@ allprojects {
         jcenter()
     }
 }
+
+task runIntegrationTests {
+    dependsOn ":backend:appengineStart"
+    dependsOn ":app:connectedCheck"
+
+    tasks.findByPath(':app:connectedCheck').mustRunAfter(":backend:appengineStart")
+    tasks.findByPath(':app:connectedCheck').finalizedBy(":backend:appengineStop")
+}
