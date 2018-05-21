@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">JokeDisplayer</string>
-    <string name="your_joke">Your Jon Skeet joke (FACT):</string>
+    <string name="your_joke">Here is your Jon Skeet <strike>joke</strike> FACT:</string>
 </resources>
