@@ -23,7 +23,8 @@ public class JokeDisplayerActivity extends AppCompatActivity {
 
         final TextView textViewJoke = findViewById(R.id.textViewJoke);
 
-        final Bundle extras = getIntent().getExtras();
+        final Bundle extras = Preconditions.checkNotNull(getIntent().getExtras(),
+                "Extras cannot be null. Please use the newIntent method. ");
         final String joke = extras.getString(KEY_JOKE);
 
         textViewJoke.setText(joke);
