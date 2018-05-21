@@ -2,6 +2,7 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,20 +44,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
+        final BaseMainActivityFragment fragment = (BaseMainActivityFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment);
+
+        fragment.setJokeButtonLoading(true);
+
         new JokerAsyncTask(new JokerAsyncTask.Callback() {
             @Override
             public void onResult(String joke) {
+                fragment.setJokeButtonLoading(false);
                 final Intent displayerIntent = JokeDisplayerActivity.newIntent(MainActivity.this, joke);
                 startActivity(displayerIntent);
             }
 
             @Override
             public void onFailed() {
+                fragment.setJokeButtonLoading(false);
                 Toast.makeText(MainActivity.this, "Joker failed to amuse us.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled() {
+                fragment.setJokeButtonLoading(false);
                 Toast.makeText(MainActivity.this, "Joker decided to quit.", Toast.LENGTH_SHORT).show();
             }
         }).execute();
