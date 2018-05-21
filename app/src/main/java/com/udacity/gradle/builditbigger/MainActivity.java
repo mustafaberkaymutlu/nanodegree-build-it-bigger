@@ -6,15 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
-import net.epictimes.jokecreator.JokeCreator;
-import net.epictimes.jokecreator.LocalJokeCreator;
 import net.epictimes.jokedisplayer.JokeDisplayerActivity;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private final JokeCreator jokeCreator = new LocalJokeCreator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +43,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        final String joke = jokeCreator.createJoke();
-        final Intent displayerIntent = JokeDisplayerActivity.newIntent(this, joke);
-        startActivity(displayerIntent);
+        new JokerAsyncTask(new JokerAsyncTask.Callback() {
+            @Override
+            public void onResult(String joke) {
+                final Intent displayerIntent = JokeDisplayerActivity.newIntent(MainActivity.this, joke);
+                startActivity(displayerIntent);
+            }
+
+            @Override
+            public void onFailed() {
+                Toast.makeText(MainActivity.this, "Joker failed to amuse us.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled() {
+                Toast.makeText(MainActivity.this, "Joker decided to quit.", Toast.LENGTH_SHORT).show();
+            }
+        }).execute();
     }
 
 }

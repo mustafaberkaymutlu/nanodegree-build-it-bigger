@@ -4,6 +4,8 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
+import net.epictimes.jokecreator.JokeCreator;
+
 import javax.inject.Named;
 
 /** An endpoint class we are exposing */
@@ -25,6 +27,12 @@ public class MyEndpoint {
         response.setData("Hi, " + name);
 
         return response;
+    }
+
+    @ApiMethod(name = "getJoke")
+    public JokeBean getJoke() {
+        final String joke = new JokeCreator().createJoke();
+        return new JokeBean(joke);
     }
 
 }
